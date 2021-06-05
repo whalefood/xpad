@@ -1,18 +1,27 @@
-# Updated Xpad Linux Kernel Driver
+# Updated Xpad Linux Kernel Driver (for ZEROPLUS controllers)
+
+### Original Repo Description:
+
 Driver for the Xbox/ Xbox 360/ Xbox 360 Wireless/ Xbox One Controllers
 
 This driver includes the latest changes in the upstream linux kernel and additionally carries the following staging changes:
 
 * enable debug outputs to ease resolving issues
-* some minor code refactoring improving readability 
+* some minor code refactoring improving readability
 
 
 **This driver does not support the XBox One Wireless Adapter (WiFi)**  
 To get that running, see: [medusalix/xow](https://github.com/medusalix/xow)
 
+### Fork's Description:
+
+So you've been trying to make your ZEROPLUS Xbox One S controller work, and maybe you've also been tearing your hair apart at it like I was. Well, fret no more! Because of this [lovely individual](https://github.com/paroj/xpad/issues/161#issuecomment-788712542), you can now finally get the damn thing to work! As not everyone'd like to go edit a bunch of lines in a .c file, this fork already includes the xpad.c file with the proper changes. The rest goes on like normal (you have to reboot after the installation btw).
+
+**ONLY USE THIS FORK IF YOU'RE SURE YOU HAVE A ZEROPLUS CONTROLLER**
+
 # Installing
 ```
-sudo git clone https://github.com/paroj/xpad.git /usr/src/xpad-0.4
+sudo git clone https://github.com/sirkhancision/xpad.git /usr/src/xpad-0.4
 sudo dkms install -m xpad -v 0.4
 ```
 # Updating

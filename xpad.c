@@ -60,7 +60,7 @@
  *
  * Later changes can be tracked in SCM.
  */
-// #define DEBUG
+
 #include <linux/kernel.h>
 #include <linux/input.h>
 #include <linux/rcupdate.h>
@@ -532,6 +532,15 @@ static const u8 xboxone_rumbleend_init[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+static const u8 xboxone_zeroplus_init1[] = {
++      0x04, 0x20, 0x01, 0x00
+};
+
+static const u8 xboxone_zeroplus_init2[] = {
+       0x01, 0x20, 0x01, 0x09, 0x00, 0x1e, 0x20, 0x10,
+       0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 /*
  * This specifies the selection of init packets that a gamepad
  * will be sent on init *and* the order in which they will be
@@ -541,8 +550,10 @@ static const u8 xboxone_rumbleend_init[] = {
 static const struct xboxone_init_packet xboxone_init_packets[] = {
 	XBOXONE_INIT_PKT(0x0e6f, 0x0165, xboxone_hori_init),
 	XBOXONE_INIT_PKT(0x0f0d, 0x0067, xboxone_hori_init),
-	XBOXONE_INIT_PKT(0x0000, 0x0000, xboxone_fw2015_init),
-	XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_s_init),
+	XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_zeroplus_init1),
+  XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_zeroplus_init2),
+	//XBOXONE_INIT_PKT(0x0000, 0x0000, xboxone_fw2015_init),
+	//XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_s_init),
 	XBOXONE_INIT_PKT(0x045e, 0x0b00, xboxone_s_init),
 	XBOXONE_INIT_PKT(0x0e6f, 0x0000, xboxone_pdp_init1),
 	XBOXONE_INIT_PKT(0x0e6f, 0x0000, xboxone_pdp_init2),
@@ -1016,7 +1027,8 @@ static bool xpad_prepare_next_init_packet(struct usb_xpad *xpad)
 		xpad->irq_out->transfer_buffer_length = init_packet->len;
 
 		/* Update packet with current sequence number */
-		xpad->odata[2] = xpad->odata_serial++;
+		//xpad->odata[2] = xpad->odata_serial++;
+		print_hex_dump(KERN_DEBUG, "Sending init packet: ", DUMP_PREFIX_OFFSET, 32, 1, init_packet->data, init_packet->len, 0);
 		return true;
 	}
 
@@ -1835,7 +1847,7 @@ static int xpad_probe(struct usb_interface *intf, const struct usb_device_id *id
 		if (usb_endpoint_xfer_int(ep)) {
 			if (usb_endpoint_dir_in(ep))
 				ep_irq_in = ep;
-			else
+			else if (usb_endpoint_dir_out(ep))
 				ep_irq_out = ep;
 		}
 	}
