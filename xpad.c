@@ -550,6 +550,7 @@ static const u8 xboxone_zeroplus_init2[] = {
 static const struct xboxone_init_packet xboxone_init_packets[] = {
 	XBOXONE_INIT_PKT(0x0e6f, 0x0165, xboxone_hori_init),
 	XBOXONE_INIT_PKT(0x0f0d, 0x0067, xboxone_hori_init),
+	XBOXONE_INIT_PKT(0x0000, 0x0000, xboxone_fw2015_init),
 	XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_zeroplus_init1),
   XBOXONE_INIT_PKT(0x045e, 0x02ea, xboxone_zeroplus_init2),
 	//XBOXONE_INIT_PKT(0x0000, 0x0000, xboxone_fw2015_init),
@@ -1027,8 +1028,7 @@ static bool xpad_prepare_next_init_packet(struct usb_xpad *xpad)
 		xpad->irq_out->transfer_buffer_length = init_packet->len;
 
 		/* Update packet with current sequence number */
-		//xpad->odata[2] = xpad->odata_serial++;
-		print_hex_dump(KERN_DEBUG, "Sending init packet: ", DUMP_PREFIX_OFFSET, 32, 1, init_packet->data, init_packet->len, 0);
+		xpad->odata[2] = xpad->odata_serial++;
 		return true;
 	}
 

@@ -21,7 +21,7 @@ So you've been trying to make your ZEROPLUS Xbox One S controller work, and mayb
 
 # Installing
 ```
-sudo git clone https://github.com/sirkhancision/xpad.git /usr/src/xpad-0.4
+sudo git clone https://github.com/whalefood/xpad.git /usr/src/xpad-0.4
 sudo dkms install -m xpad -v 0.4
 ```
 # Updating
